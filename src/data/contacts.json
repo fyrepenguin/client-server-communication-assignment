@@ -1,0 +1,25 @@
+[
+  {
+  "id":1,
+  "firstName":"John",
+  "lastName":"Doe",
+  "email":"john@email.com",
+  "phoneNumber":"123-456-7890",
+  "image":"https://randomuser.me/api/portraits/"
+},
+{
+  "id":2,
+  "firstName":"Jane",
+  "lastName":"Doe",
+  "email":"jane@email.com",
+  "phoneNumber":"123-456-7890",
+  "image":"https://randomuser.me/api/portraits/"
+},
+{
+  "id":3,
+  "firstName":"Jack",
+  "lastName":"Doe",
+  "email":"jack@email.com",
+  "phoneNumber":"123-456-7890",
+  "image":"https://randomuser.me/api/portraits/"
+}]
