@@ -1,18 +1,71 @@
-import { createSlice } from '@reduxjs/toolkit'
-import chatsData from '../data/chats.json'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { v4 as uuid } from 'uuid'
 
-const initialState = { selected: 0, data: [...chatsData] }
+const initialState = { selected: 0, data: [] }
 
-function arrayEquality(a, b) {
-  if (a.length !== b.length) return false
 
-  a.sort()
-  b.sort()
+export const fetchChats = createAsyncThunk('tasks/fetchChats', async (_, { getState }) => {
+  const state = getState()
+  const response = await fetch('http://localhost:3001/chats').then(res => res.json()).then(res => {
+    return { ...state.chats, data: res }
+  }).catch(err => console.log(err))
+  return response
+})
 
-  return a.every((element, index) => {
-    return element === b[index]
-  })
-}
+export const createChat = createAsyncThunk('tasks/createChat', async (recipients, { getState }) => {
+  const state = getState()
+  const response = await fetch('http://localhost:3001/chats', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ recipients: recipients, id: uuid(), messages: [] })
+  }).then(res => res.json()).then(res => {
+    return { ...state.chats, data: [...state.chats.data, res] }
+  }
+  ).catch(err => console.error(err))
+  return response
+})
+
+export const deleteChat = createAsyncThunk('chats/deleteChat', async (id, { getState }) => {
+  const state = getState()
+  const response = await fetch(`http://localhost:3001/chats/${id}`, { method: 'DELETE' }).then(res => {
+    if (!res.ok) {
+      // make the promise be rejected if we didn't get a 2xx response
+      const err = new Error("Not 2xx response");
+      err.response = res;
+      throw err;
+    } else {
+      // got the desired response
+      return { ...state.chats, data: state.chats.data.filter(chat => chat.id !== id) }
+    }
+
+  }).catch(err => console.error(err))
+  return response
+});
+
+export const sendMessage = createAsyncThunk('chats/sendMessage', async ({ sender, text, id }, { getState }) => {
+  const state = getState();
+  const chat = state.chats.data.find(chat => chat.id === id);
+  const response = await fetch(`http://localhost:3001/chats/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ ...chat, messages: [...chat.messages, { sender, text }] })
+  }).then(res => res.json()).then(res => {
+    console.log({
+      ...state.chats, data: [{ ...res }, ...state.chats.data.filter(chat => chat.id !== id)]
+    })
+    return {
+      ...state.chats, data: [{ ...res }, ...state.chats.data.filter(chat => chat.id !== id)]
+    }
+  }
+  ).catch(err => console.error(err))
+  return response
+})
+
+
 export const chatsSlice = createSlice({
   name: 'chats',
   initialState,
@@ -20,51 +73,27 @@ export const chatsSlice = createSlice({
     getChat: (action) => {
       return action.payload
     },
-    deleteChat: (state, action) => {
-      return { ...state, data: state.data.filter((_, i) => i !== action.payload) }
-    },
-    createChat: (state, action) => {
-      const chatAlreadyExists = [...state.data].map(chat => arrayEquality(action.payload, chat.recipients)).includes(true)
-      return !chatAlreadyExists ? { ...state, data: [...state.data, { recipients: action.payload, messages: [] }] } : state
-    },
     selectChat: (state, action) => {
       return { ...state, selected: action.payload }
     },
-    sendMessage: (state, action) => {
-      const { recipients, text, sender } = action.payload;
-      const getChats = () => {
-        let madeChange = false
-        const newMessage = { sender, text }
-        const newChats = [...state.data].map(chat => {
-
-          if (arrayEquality(chat.recipients, recipients)) {
-            madeChange = true
-            return {
-              ...chat,
-              messages: [...chat.messages, newMessage]
-            }
-          }
-
-          return chat
-        })
-
-        if (madeChange) {
-          return newChats
-        } else {
-          return [
-            ...state.data,
-            { recipients, messages: [newMessage] }
-          ]
-        }
-      }
-
-      return { ...state, data: getChats() }
-
-    },
   },
+  extraReducers: {
+    [fetchChats.fulfilled]: (state, action) => {
+      return action.payload
+    },
+    [createChat.fulfilled]: (state, action) => {
+      return action.payload
+    },
+    [deleteChat.fulfilled]: (state, action) => {
+      return action.payload
+    },
+    [sendMessage.fulfilled]: (state, action) => {
+      return { ...action.payload, selected: 0 }
+    }
+  }
 })
 
 // Action creators are generated for each case reducer function
-export const { getChat, createChat, deleteChat, selectChat, sendMessage } = chatsSlice.actions
+export const { getChat, selectChat } = chatsSlice.actions
 
 export default chatsSlice.reducer

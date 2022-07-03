@@ -36,14 +36,14 @@ export default function ChatList() {
   return (
     <div>
       {chats.map((chat, index) => (
-        <div key={index} className={`chat-item ${chat.selected ? 'active' : ''}`} >
+        <div key={chat.id} className={`chat-item ${chat.selected ? 'active' : ''}`} >
           <div className='avatar-name-container' onClick={() => dispatch(selectChat(index))}>
             <div className='avatar'></div>
             <span>{chat.recipients.map(r => r.firstName).join(', ')}</span>
           </div>
 
           <div className='chat-item-buttons-container'>
-            <button onClick={() => dispatch(deleteChat(index))} className="delete-button" >
+            <button onClick={() => dispatch(deleteChat(chat.id))} className="delete-button" >
               <FaTrashAlt />
             </button>
           </div>

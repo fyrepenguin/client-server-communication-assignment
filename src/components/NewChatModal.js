@@ -40,7 +40,7 @@ export default function NewChatModal({ closeModal }) {
         <div className='modal-body'>
           <form onSubmit={handleSubmit} className='modal-form'>
             {contacts.map(contact => (
-              <div controlId={contact.email} key={contact.email} className="form-group form-checkbox">
+              <div key={contact.email} className="form-group form-checkbox">
                 <label htmlFor={contact.email}> <input
                   name="contact"
                   type="checkbox"

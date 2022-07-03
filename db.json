@@ -1,0 +1,92 @@
+{
+  "contacts": [
+    {
+      "id": "4fcd1a51-97d7-41ca-a034-1c4aa2287317",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@email.com",
+      "phoneNumber": "123-456-7890",
+      "image": "https://randomuser.me/api/portraits/"
+    },
+    {
+      "id": "20cdbb0f-a214-43fb-b03f-23c8cf04b7ab",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane@email.com",
+      "phoneNumber": "123-456-7890",
+      "image": "https://randomuser.me/api/portraits/"
+    },
+    {
+      "id": "18494952-4f92-4a27-a46b-f73561e9eaf8",
+      "firstName": "Jack",
+      "lastName": "Doe",
+      "email": "jack@email.com",
+      "phoneNumber": "123-456-7890",
+      "image": "https://randomuser.me/api/portraits/"
+    }
+  ],
+  "chats": [
+    {
+      "id": "e13f921c-39e9-48e9-9d54-ae17e1ea8327",
+      "recipients": [
+        "user@email.com"
+      ],
+      "messages": [
+        {
+          "sender": "user@email.com",
+          "text": "Hi"
+        }
+      ]
+    },
+    {
+      "id": "e9b9e5e0-0484-4a7c-b294-3ee3ff96485e",
+      "recipients": [
+        "john@email.com"
+      ],
+      "messages": [
+        {
+          "sender": "user@email.com",
+          "text": "Hi John"
+        }
+      ]
+    },
+    {
+      "id": "dfd317ab-5838-40b7-b0b9-24ed2cd9b468",
+      "recipients": [
+        "jane@email.com"
+      ],
+      "messages": [
+        {
+          "sender": "user@email.com",
+          "text": "Hi, Jane"
+        }
+      ]
+    },
+    {
+      "id": "15b8ff65-4cc7-469d-8d25-8169e5ad0ce3",
+      "recipients": [
+        "jack@email.com"
+      ],
+      "messages": [
+        {
+          "sender": "user@email.com",
+          "text": "Hi, Jack"
+        }
+      ]
+    },
+    {
+      "id": "f90017fc-3611-4b5c-9360-9d0b61f44403",
+      "recipients": [
+        "jack@email.com",
+        "jane@email.com",
+        "john@email.com"
+      ],
+      "messages": [
+        {
+          "sender": "user@email.com",
+          "text": "Hi, John, Jane and Jack!"
+        }
+      ]
+    }
+  ]
+}

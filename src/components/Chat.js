@@ -45,7 +45,7 @@ export default function Chat() {
 
     dispatch(sendMessage(
       {
-        recipients: selectedChat.recipients.map(r => r.email),
+        id: selectedChat.id,
         text,
         sender: auth.email
       }

@@ -16,7 +16,7 @@ export default function ContactList() {
           </div>
 
           <div className='contact-item-buttons-container'>
-            <button onClick={() => dispatch(deleteContact(contact.email))} className="delete-button" >
+            <button onClick={() => dispatch(deleteContact(contact.id))} className="delete-button" >
               <FaTrashAlt />
             </button>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { createContact } from '../reducers/contactsSlice';
-
+import { v4 as uuid } from 'uuid';
 export default function NewContactModal({ closeModal }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -14,7 +14,11 @@ export default function NewContactModal({ closeModal }) {
     e.preventDefault();
     // validation needs to be updated with regex for email/phone number
     if (firstName.length > 0 && email.length > 0) {
-      dispatch(createContact({ email, firstName, lastName, phoneNumber }))
+      dispatch(createContact({ id: uuid(), email, firstName, lastName, phoneNumber }))
+      setEmail('');
+      setFirstName('');
+      setLastName('');
+      setPhoneNumber('');
       closeModal()
     }
     if (firstName.length === 0) {
@@ -36,19 +40,19 @@ export default function NewContactModal({ closeModal }) {
           <form onSubmit={handleSubmit} className='modal-form'>
             <div className="form-group" >
               <label>First Name</label>
-              <input type="text" onChange={(e) => setFirstName(e.target.value)} required />
+              <input type="text" onChange={(e) => setFirstName(e.target.value)} required value={firstName} />
             </div>
             <div className="form-group" >
               <label>Last Name</label>
-              <input type="text" onChange={(e) => setLastName(e.target.value)} required />
+              <input type="text" onChange={(e) => setLastName(e.target.value)} required value={lastName} />
             </div>
             <div className="form-group" >
               <label>Phone Number</label>
-              <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} required />
+              <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} required value={phoneNumber} />
             </div>
             <div className="form-group">
               <label>Email</label>
-              <input type="text" onChange={(e) => setEmail(e.target.value)} required />
+              <input type="text" onChange={(e) => setEmail(e.target.value)} required value={email} />
             </div>
             <footer>
               <button className="primary" onClick={handleSubmit}>Create Contact</button>
